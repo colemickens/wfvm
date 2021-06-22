@@ -1,0 +1,18 @@
+name: "Sync-Wfvm"
+on:
+  push:
+  schedule:
+    - cron: '*/10 * * * *'
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: mirror
+      run: |
+        git config --global user.name 'Cole Botkens'
+        git config --global user.email 'cole.mickens+colebot@gmail.com'
+        git remote add mlabs 'https://git.m-labs.hk/M-Labs/wfvm'
+        git remote update
+        git rebase mlabs/master
+        git push origin HEAD -f
